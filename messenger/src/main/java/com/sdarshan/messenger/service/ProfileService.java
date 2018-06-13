@@ -28,7 +28,7 @@ public class ProfileService {
 		Profile prof = profiles.get(profileName);
 		profile.setId(prof.getId());
 		profiles.put(profileName, profile);
-		return prof;
+		return profile;
 	}
 	
 	public void removeProfile(String profileName){

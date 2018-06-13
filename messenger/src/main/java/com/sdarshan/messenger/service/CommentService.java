@@ -1,6 +1,7 @@
 package com.sdarshan.messenger.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.sdarshan.messenger.database.DatabaseClass;
@@ -21,15 +22,23 @@ public class CommentService {
 	
 	public Comment getComment(Long messageId, Long commentId){
 		Map<Long,Comment> comments = messages.get(messageId).getComments();
-		return comments.get(commentId);
+		return comments== null? null: comments.get(commentId);
 	}
 	
 	public Comment addComment(Long messageId, Comment comment){
+		Message msg = messages.get(messageId);
+		Map<Long, Comment> comments = msg.getComments();
 		
-		Map<Long, Comment> comments = messages.get(messageId).getComments();
-		comment.setId(comments.size() + 1);
+		comment.setId((comments==null || comments.isEmpty())? 1:comments.size() + 1);
 		comment.setCreated(new Date());
+		if (comments != null) {
 		comments.put(comment.getId(), comment);
+		}
+		else {
+		comments =new HashMap<Long,Comment>();
+		comments.put(comment.getId(), comment);
+		} 
+		msg.setComments(comments);	
 		return comment;
 	}
 
